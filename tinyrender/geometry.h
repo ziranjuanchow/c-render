@@ -37,6 +37,7 @@ template <class t> struct Vec3 {
     float norm () const { return std::sqrt(x*x+y*y+z*z); }
     Vec3<t> & normalize(t l=1) { *this = (*this)*(l/norm()); return *this; }
     template <class > friend std::ostream& operator<<(std::ostream& s, Vec3<t>& v);
+    template <class > friend Vec3<t> cross(Vec3<t> v1, Vec3<t> v2);
 };
 
 typedef Vec2<float> Vec2f;
@@ -53,5 +54,12 @@ template <class t> std::ostream& operator<<(std::ostream& s, Vec3<t>& v) {
     s << "(" << v.x << ", " << v.y << ", " << v.z << ")\n";
     return s;
 }
+
+
+template <class t>
+Vec3<t> cross(Vec3<t> v1, Vec3<t> v2)
+{
+    return Vec3<t>(v1[1] * v2[2] - v1[2] * v2[1], -(v1[0] * v2[2] - v1[2] * v2[0]), v1[0] * v2[1] - v1[1] * v2[0]);
+};
 
 #endif //__GEOMETRY_H__
