@@ -38,7 +38,7 @@ void triangle(Vec2i *pts, TGAImage &image, TGAColor color) {
 int main(int argc, char** argv) {
     TGAImage frame(200, 200, TGAImage::RGB);
     Vec2i pts[3] = {Vec2i(10,10), Vec2i(100, 30), Vec2i(190, 160)};
-    triangle(pts, frame, TGAColor(255, 0, 0, 0));
+    triangle(pts, frame, TGAColor(255, 0, 0, 255));
     frame.flip_vertically(); // to place the origin in the bottom left corner of the image
     frame.write_tga_file("framebuffer.tga");
     return 0;
