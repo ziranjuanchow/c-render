@@ -36,3 +36,10 @@
 .idea
 out
 bin
+
+
+*/.vs
+*/.vscode
+*/.idea
+*/out
+*/bin

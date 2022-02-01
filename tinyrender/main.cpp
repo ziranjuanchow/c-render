@@ -1,10 +1,15 @@
 #include <vector>
 #include <iostream>
+#include "model.h"
 #include "geometry.h"
 #include "tgaimage.h"
 
-const int width  = 200;
-const int height = 200;
+const TGAColor white = TGAColor(255, 255, 255, 255);
+const TGAColor red   = TGAColor(255, 0,   0,   255);
+const TGAColor green = TGAColor(0,   255, 0,   255);
+Model *model = NULL;
+const int width  = 800;
+const int height = 800;
 
 Vec3f barycentric(Vec2i *pts, Vec2i P) {
     Vec3f u = cross(Vec3f(pts[2][0]-pts[0][0], pts[1][0]-pts[0][0], pts[0][0]-P[0]), Vec3f(pts[2][1]-pts[0][1], pts[1][1]-pts[0][1], pts[0][1]-P[1]));
@@ -35,11 +40,43 @@ void triangle(Vec2i *pts, TGAImage &image, TGAColor color) {
     }
 }
 
+<<<<<<< HEAD
 int main() {
     TGAImage frame(200, 200, TGAImage::RGB);
     Vec2i pts[3] = {Vec2i(10,10), Vec2i(100, 30), Vec2i(190, 160)};
     triangle(pts, frame, TGAColor(255, 0, 0, 0));
     frame.flip_vertically(); // to place the origin in the bottom left corner of the image
     frame.write_tga_file("framebuffer.tga");
+=======
+int main(int argc, char** argv) {
+    if (2==argc) {
+        model = new Model(argv[1]);
+    } else {
+        model = new Model("obj/african_head.obj");
+    }
+    TGAImage image(width, height, TGAImage::RGB);
+    Vec3f light_dir(0,0,-1);
+
+    for (int i=0; i<model->nfaces(); i++) {
+        std::vector<int> face = model->face(i);
+        Vec2i screen_coords[3];
+        Vec3f world_coords[3];
+        for (int j=0; j<3; j++) {
+            Vec3f v = model->vert(face[j]);
+            screen_coords[j] = Vec2i((v.x+1.)*width/2., (v.y+1.)*height/2.);
+            world_coords[j]  = v;
+        }
+        Vec3f n = (world_coords[2]-world_coords[0])^(world_coords[1]-world_coords[0]);
+        n.normalize();
+        float intensity = n*light_dir;
+        if (intensity>0) {
+            triangle(screen_coords, image, TGAColor(intensity*255, intensity*255, intensity*255, 255));
+        }
+    }
+
+    image.flip_vertically(); // i want to have the origin at the left bottom corner of the image
+    image.write_tga_file("output.tga");
+    delete model;
+>>>>>>> 3338e650c0b307d20344b7cc692f57353fbe7ead
     return 0;
 }
