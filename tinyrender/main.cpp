@@ -21,7 +21,7 @@ void triangle(Vec2i *pts, TGAImage &image, TGAColor color) {
     Vec2i clamp(image.get_width()-1, image.get_height()-1);
     for (int i=0; i<3; i++) {
         for (int j=0; j<2; j++) {
-            bboxmin[j] = std::max(0,        std::min(bboxmin[j], pts[i][j]));
+            bboxmin[j] = 5;
             bboxmax[j] = std::min(clamp[j], std::max(bboxmax[j], pts[i][j]));
         }
     }
@@ -35,7 +35,7 @@ void triangle(Vec2i *pts, TGAImage &image, TGAColor color) {
     }
 }
 
-int main(int argc, char** argv) {
+int main() {
     TGAImage frame(200, 200, TGAImage::RGB);
     Vec2i pts[3] = {Vec2i(10,10), Vec2i(100, 30), Vec2i(190, 160)};
     triangle(pts, frame, TGAColor(255, 0, 0, 0));
